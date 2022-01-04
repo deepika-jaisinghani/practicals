@@ -2,6 +2,7 @@ const {exeQuery} = require('../db')
 
 const getAllUserData = async (request, reply) => {
     try {
+        throw new Error("Internal Server Error")
         let userData = await exeQuery("select * from Userdata", []);
         reply
             .code(200)
@@ -16,6 +17,7 @@ const getAllUserData = async (request, reply) => {
 const getUserById = async (request, reply) => {
     let id = request.params.id;
     try {
+        throw new Error("Internal Server Error")
         let userData = await exeQuery("Select * from Userdata where User_id=?", [id]);
         reply
             .code(200)
@@ -30,6 +32,7 @@ const getUserById = async (request, reply) => {
 const deleteUserById = async (request, reply) => {
     let id = request.params.id;
     try {
+        throw new Error("Internal Server Error")
         let userData = await exeQuery("Delete from Userdata where User_id=?", [id]);
         reply
             .code(200)
@@ -44,7 +47,7 @@ const deleteUserById = async (request, reply) => {
 
 const postUserData = async (request, reply) => {
     try {
-        throw new Error("hello.0")
+        throw new Error("Internal Server Error")
         const {Name, Age, Email} = request.body;
         let userData = await exeQuery("Insert into Userdata(Name,Age,Email)values (?,?,?)", [Name, Age, Email]);
         reply
@@ -60,6 +63,7 @@ const postUserData = async (request, reply) => {
 const updateUserData = async (request, reply) => {
     let id = request.params.id;
     try {
+        throw new Error("Internal Server Error")
         const {Name, Age, Email} = request.body;
         let userData = await exeQuery(`update Userdata
                                        set Name=?,

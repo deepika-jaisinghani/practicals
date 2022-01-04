@@ -37,17 +37,6 @@ const PostValidation = {
 
     }
 }
-// const PostSchema = {
-//     response: {
-//         500: {
-//             type: 'object',
-//             properties: {
-//                 statusCode: {type: 'number'},
-//                 Message: {type: "string"}
-//             }
-//         }
-//     }
-// }
 
 const UpdatePostSchema = {
     body: {
@@ -62,6 +51,13 @@ const UpdatePostSchema = {
     response: {
         200: {type: 'string'}, // a simple message will be sent
     },
+    500: {
+        type: 'object',
+        properties: {
+            statusCode: {type: 'number'},
+            message: {type: "string"}
+        }
+    }
 }
 
 
@@ -85,6 +81,13 @@ const GetById = {
                 }
             }
 
+        },
+        500: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
         }
     }
 }
@@ -105,6 +108,13 @@ const GetAllData = {
                 }
             }
 
+        },
+        500: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
         }
 
     }
@@ -122,6 +132,13 @@ const DeleteById = {
             type: 'object',
             properties: {
                 message: {type: 'string'}
+            }
+        },
+        500: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
             }
         }
 
