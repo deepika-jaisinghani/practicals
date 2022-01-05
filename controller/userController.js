@@ -1,5 +1,4 @@
 const {ExeQuery} = require('../db')
-const fastify = require("fastify");
 
 const getAllUserDataAction = async (request, reply) => {
     try {
