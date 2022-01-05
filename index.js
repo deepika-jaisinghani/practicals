@@ -1,10 +1,10 @@
 //Import the fastify framework
-const fastify = require("fastify")({logger : {
+const fastify = require("fastify")({
+    logger: {
         level: 'error',
         file: 'logs/error.log'
     }
 });
-
 
 fastify.register(require('fastify-swagger'), {
     exposeRoute: true,

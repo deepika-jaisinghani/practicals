@@ -19,15 +19,15 @@ pool.getConnection((err) => {
 const ExeQuery = (query, arrayParams) => {
     return new Promise((resolve, reject) => {
         try {
-            pool.query(query, arrayParams,(err,data)=> {
-                if (err){
+            pool.query(query, arrayParams, (err, data) => {
+                if (err) {
                     console.log("Error executing the query")
                     reject(err)
                 }
                 resolve(data);
             });
         } catch (err) {
-                reject(err);
+            reject(err);
         }
     });
 };

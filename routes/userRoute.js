@@ -1,3 +1,4 @@
+const {AllUserDataGet, UserByIdGet, UserDataEdit} = require("../controller/userController");
 const PostValidation = {
     body: {
         type: 'object',
@@ -183,16 +184,16 @@ const DeleteById = {
 
 module.exports = (fastify) => {
     const {
-        GetAllUserData,
-        GetUserById,
-        DeleteUserById,
-        PostUserData,
-        UpdateUserData
+        AllUserDataGet,
+        UserByIdGet,
+        UserByIdDelete,
+        UserDataAdd,
+        UserDataEdit
     } = require("../controller/userController");
 
-    fastify.get("/api/users", {schema: GetAllData}, GetAllUserData);
-    fastify.get("/api/users/:id", {schema: GetById}, GetUserById);
-    fastify.post("/api/users", {schema: PostValidation}, PostUserData);
-    fastify.put("/api/users/:id", {schema: UpdatePostSchema}, UpdateUserData);
-    fastify.delete("/api/users/:id", {schema: DeleteById}, DeleteUserById);
+    fastify.get("/api/users", {schema: GetAllData}, AllUserDataGet);
+    fastify.get("/api/users/:id", {schema: GetById}, UserByIdGet);
+    fastify.post("/api/users", {schema: PostValidation}, UserDataAdd);
+    fastify.put("/api/users/:id", {schema: UpdatePostSchema}, UserDataEdit);
+    fastify.delete("/api/users/:id", {schema: DeleteById}, UserByIdDelete);
 }
