@@ -1,3 +1,4 @@
+const {GetAllUserData, DeleteUserById} = require("../controller/userController");
 const PostValidation = {
     body: {
         type: 'object',
@@ -33,8 +34,14 @@ const PostValidation = {
                 statusCode: {type: 'number'},
                 message: {type: "string"}
             }
+        },
+        422: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
         }
-
     }
 }
 
@@ -49,18 +56,35 @@ const UpdatePostSchema = {
         },
     },
     response: {
-        200: {type: 'string'}, // a simple message will be sent
-    },
-    500: {
-        type: 'object',
-        properties: {
-            statusCode: {type: 'number'},
-            message: {type: "string"}
+        200: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    User_id: {type: 'number'},
+                    Name: {type: 'string'},
+                    Age: {type: 'number'},
+                    Email: {type: 'string'},
+                }
+            }
+        },
+        500: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
+        },
+        422: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
         }
     }
+
 }
-
-
 const GetById = {
     params: {
         type: 'object',
@@ -83,6 +107,13 @@ const GetById = {
 
         },
         500: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
+        },
+        422: {
             type: 'object',
             properties: {
                 statusCode: {type: 'number'},
@@ -115,6 +146,13 @@ const GetAllData = {
                 statusCode: {type: 'number'},
                 message: {type: "string"}
             }
+        },
+        422: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
         }
 
     }
@@ -140,6 +178,13 @@ const DeleteById = {
                 statusCode: {type: 'number'},
                 message: {type: "string"}
             }
+        },
+        422: {
+            type: 'object',
+            properties: {
+                statusCode: {type: 'number'},
+                message: {type: "string"}
+            }
         }
 
     }
@@ -147,17 +192,16 @@ const DeleteById = {
 
 module.exports = (fastify) => {
     const {
-        getAllUserData,
-        getUserById,
-        deleteUserById,
-        postUserData,
-        updateUserData
+        GetAllUserData,
+        GetUserById,
+        DeleteUserById,
+        PostUserData,
+        UpdateUserData
     } = require("../controller/userController");
 
-    fastify.get("/api/users", {schema: GetAllData}, getAllUserData);
-    fastify.get("/api/users/:id", {schema: GetById}, getUserById);
-    fastify.post("/api/users", {schema: PostValidation}, postUserData);
-    // console.log({schema: PostValidation, PostSchema})
-    fastify.put("/api/users/:id", {schema: UpdatePostSchema}, updateUserData);
-    fastify.delete("/api/users/:id", {schema: DeleteById}, deleteUserById);
+    fastify.get("/api/users", {schema: GetAllData}, GetAllUserData);
+    fastify.get("/api/users/:id", {schema: GetById}, GetUserById);
+    fastify.post("/api/users", {schema: PostValidation}, PostUserData);
+    fastify.put("/api/users/:id", {schema: UpdatePostSchema}, UpdateUserData);
+    fastify.delete("/api/users/:id", {schema: DeleteById}, DeleteUserById);
 }
