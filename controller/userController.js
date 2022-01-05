@@ -1,18 +1,14 @@
-const {exeQuery} = require('../db')
+const {ExeQuery} = require('../db')
+const fastify = require("fastify");
 
 const GetAllUserData = async (request, reply, error) => {
     try {
         // throw new Error("Internal Server Error");
-        let userData = await exeQuery("select * from Userdata", []);
+        let UserData = await ExeQuery("select * from User_data", []);
         reply
             .code(200)
-            .send(userData);
+            .send(UserData);
 
-        if (error.validation) {
-            reply
-                .code(422)
-                .send(new Error('Validation Failed'));
-        }
     } catch (err) {
         reply
             .code(500)
@@ -24,10 +20,10 @@ const GetUserById = async (request, reply) => {
     let id = request.params.id;
     try {
         // throw new Error("Internal Server Error")
-        let userData = await exeQuery("Select * from Userdata where User_id=?", [id]);
+        let UserData = await ExeQuery("Select * from User_data where User_id=?", [id]);
         reply
             .code(200)
-            .send(userData);
+            .send(UserData);
     } catch (err) {
         reply
             .code(500)
@@ -39,10 +35,10 @@ const DeleteUserById = async (request, reply) => {
     let id = request.params.id;
     try {
         // throw new Error("Internal Server Error")
-        let userData = await exeQuery("Delete from Userdata where User_id=?", [id]);
+        let UserData = await ExeQuery("Delete from User_data where User_id=?", [id]);
         reply
             .code(200)
-            .send({message: "USER DELETED"}, userData);
+            .send({message: "USER DELETED"}, UserData);
 
     } catch (err) {
         reply
@@ -51,19 +47,17 @@ const DeleteUserById = async (request, reply) => {
     }
 };
 
-const PostUserData = async (request, reply, error) => {
+const PostUserData = async (request, reply) => {
     try {
         // throw new Error("Internal Server Error")
         const {Name, Age, Email} = request.body;
-        let userData = await exeQuery("Insert into Userdata(Name,Age,Email)values (?,?,?)", [Name, Age, Email]);
-        reply
+        let UserData = await ExeQuery("Insert into User_data(Name,Age,Email)values (?,?,?)", [Name, Age, Email]);
+        console.log("Hello",UserData)
+        // fastify.log.error("error hello")
+        return reply
             .code(200)
-            .send(userData);
-        if (error.validation) {
-            reply
-                .code(422)
-                .send(new Error('Validation failed'));
-        }
+            .send(UserData);
+
     } catch (err) {
         reply
             .code(500)
@@ -72,15 +66,16 @@ const PostUserData = async (request, reply, error) => {
 };
 
 const UpdateUserData = async (request, reply) => {
-    let id = request.params.id;
+    let id = request.params.id
     console.log("deepika",id)
+    console.log("body",request.body)
     try {
         // throw new Error("Internal Server Error")
         const {Name, Age, Email} = request.body;
-        let userData = await exeQuery(`UPDATE Userdata set Name=?, Age=?, Email=? where User_id = ${id}`, [Name, Age, Email]);
+        let UserData = await ExeQuery(`update User_data set Name=?, Age=?, Email=? where User_id = ?`, [Name, Age, Email, id]);
         reply
             .code(200)
-            .send(userData);
+            .send(UserData);
     } catch (err) {
         reply
             .code(500)

@@ -1,4 +1,3 @@
-const {GetAllUserData, DeleteUserById} = require("../controller/userController");
 const PostValidation = {
     body: {
         type: 'object',
@@ -16,15 +15,12 @@ const PostValidation = {
     },
     response: {
         200: {
-            type: 'array',
-            items: {
-                type: 'object',
-                properties: {
-                    User_id: {type: 'number'},
-                    Name: {type: 'string'},
-                    Age: {type: 'number'},
-                    Email: {type: 'string'},
-                }
+            type: 'object',
+            properties: {
+                User_id: {type: 'number'},
+                Name: {type: 'string'},
+                Age: {type: 'number'},
+                Email: {type: 'string'},
             }
 
         },
@@ -46,6 +42,12 @@ const PostValidation = {
 }
 
 const UpdatePostSchema = {
+    params: {
+        type: 'object',
+        properties: {
+            id: {type: 'number'}
+        }
+    },
     body: {
         type: 'object',
         required: ['Name', 'Age', 'Email'],
@@ -56,18 +58,8 @@ const UpdatePostSchema = {
         },
     },
     response: {
-        200: {
-            type: 'array',
-            items: {
-                type: 'object',
-                properties: {
-                    User_id: {type: 'number'},
-                    Name: {type: 'string'},
-                    Age: {type: 'number'},
-                    Email: {type: 'string'},
-                }
-            }
-        },
+        200: {type: 'string'}, // a simple message will be sent
+
         500: {
             type: 'object',
             properties: {
@@ -83,7 +75,6 @@ const UpdatePostSchema = {
             }
         }
     }
-
 }
 const GetById = {
     params: {

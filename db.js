@@ -16,7 +16,7 @@ pool.getConnection((err) => {
     }
 
 });
-const exeQuery = (query, arrayParams) => {
+const ExeQuery = (query, arrayParams) => {
     return new Promise((resolve, reject) => {
         try {
             pool.query(query, arrayParams,(err,data)=> {
@@ -33,5 +33,5 @@ const exeQuery = (query, arrayParams) => {
 };
 
 module.exports = {
-    exeQuery
+    ExeQuery
 }
