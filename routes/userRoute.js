@@ -1,27 +1,26 @@
-const {AllUserDataGet, UserByIdGet, UserDataEdit} = require("../controller/userController");
 const PostValidation = {
     body: {
         type: 'object',
         additionalProperties: false,
         properties: {
-            Name: {type: 'string', pattern: '[A-Za-z]'},
-            Age: {type: 'number'},
-            Email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
+            name: {type: 'string', pattern: '[A-Za-z]'},
+            age: {type: 'number'},
+            email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
         },
         required: [
-            'Name',
-            'Age',
-            'Email',
+            'name',
+            'age',
+            'email',
         ],
     },
     response: {
         200: {
             type: 'object',
             properties: {
-                User_id: {type: 'number'},
-                Name: {type: 'string'},
-                Age: {type: 'number'},
-                Email: {type: 'string'},
+                user_id: {type: 'number'},
+                name: {type: 'string'},
+                age: {type: 'number'},
+                email: {type: 'string'},
             }
 
         },
@@ -51,11 +50,11 @@ const UpdatePostSchema = {
     },
     body: {
         type: 'object',
-        required: ['Name', 'Age', 'Email'],
+        required: ['name', 'age', 'email'],
         properties: {
-            Name: {type: 'string', pattern: '[A-Za-z]'},
-            Age: {type: 'number'},
-            Email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
+            name: {type: 'string', pattern: '[A-Za-z]'},
+            age: {type: 'number'},
+            email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
         },
     },
     response: {
@@ -90,10 +89,10 @@ const GetById = {
             items: {
                 type: 'object',
                 properties: {
-                    User_id: {type: 'number'},
-                    Name: {type: 'string'},
-                    Age: {type: 'number'},
-                    Email: {type: 'string'},
+                    user_id: {type: 'number'},
+                    name: {type: 'string'},
+                    age: {type: 'number'},
+                    email: {type: 'string'},
                 }
             }
 
@@ -123,10 +122,10 @@ const GetAllData = {
             items: {
                 type: 'object',
                 properties: {
-                    User_id: {type: 'number'},
-                    Name: {type: 'string'},
-                    Age: {type: 'number'},
-                    Email: {type: 'string'},
+                    user_id: {type: 'number'},
+                    name: {type: 'string'},
+                    age: {type: 'number'},
+                    email: {type: 'string'},
 
                 }
             }
@@ -184,16 +183,16 @@ const DeleteById = {
 
 module.exports = (fastify) => {
     const {
-        AllUserDataGet,
-        UserByIdGet,
-        UserByIdDelete,
-        UserDataAdd,
-        UserDataEdit
+        getAllUserDataAction,
+        getUserByIdAction,
+        deleteUserByIdAction,
+        postUserDataAction,
+        updateUserDataAction
     } = require("../controller/userController");
 
-    fastify.get("/api/users", {schema: GetAllData}, AllUserDataGet);
-    fastify.get("/api/users/:id", {schema: GetById}, UserByIdGet);
-    fastify.post("/api/users", {schema: PostValidation}, UserDataAdd);
-    fastify.put("/api/users/:id", {schema: UpdatePostSchema}, UserDataEdit);
-    fastify.delete("/api/users/:id", {schema: DeleteById}, UserByIdDelete);
+    fastify.get("/api/users", {schema: GetAllData}, getAllUserDataAction);
+    fastify.get("/api/users/:id", {schema: GetById}, getUserByIdAction);
+    fastify.post("/api/users", {schema: PostValidation}, postUserDataAction);
+    fastify.put("/api/users/:id", {schema: UpdatePostSchema}, updateUserDataAction);
+    fastify.delete("/api/users/:id", {schema: DeleteById}, deleteUserByIdAction);
 }

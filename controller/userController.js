@@ -1,13 +1,12 @@
 const {ExeQuery} = require('../db')
 const fastify = require("fastify");
 
-const AllUserDataGet = async (request, reply, error) => {
+const getAllUserDataAction = async (request, reply) => {
     try {
-        // throw new Error("Internal Server Error");
-        let UserData = await ExeQuery("select * from user_data", []);
+        let userData = await ExeQuery("select * from user_data", []);
         reply
             .code(200)
-            .send(UserData);
+            .send(userData);
 
     } catch (err) {
         reply
@@ -16,14 +15,13 @@ const AllUserDataGet = async (request, reply, error) => {
     }
 };
 
-const UserByIdGet = async (request, reply) => {
+const getUserByIdAction = async (request, reply) => {
     let id = request.params.id;
     try {
-        // throw new Error("Internal Server Error")
-        let UserData = await ExeQuery("Select * from user_data where user_id=?", [id]);
+        let userData = await ExeQuery("Select * from user_data where user_id=?", [id]);
         reply
             .code(200)
-            .send(UserData);
+            .send(userData);
     } catch (err) {
         reply
             .code(500)
@@ -31,14 +29,13 @@ const UserByIdGet = async (request, reply) => {
     }
 };
 
-const UserByIdDelete = async (request, reply) => {
+const deleteUserByIdAction = async (request, reply) => {
     let id = request.params.id;
     try {
-        // throw new Error("Internal Server Error")
-        let UserData = await ExeQuery("Delete from user_data where user_id=?", [id]);
+        let userData = await ExeQuery("Delete from user_data where user_id=?", [id]);
         reply
             .code(200)
-            .send({message: "USER DELETED"}, UserData);
+            .send({message: "USER DELETED"}, userData);
 
     } catch (err) {
         reply
@@ -47,16 +44,13 @@ const UserByIdDelete = async (request, reply) => {
     }
 };
 
-const UserDataAdd = async (request, reply) => {
+const postUserDataAction = async (request, reply) => {
     try {
-        // throw new Error("Internal Server Error")
-        const {Name, Age, Email} = request.body;
-        let UserData = await ExeQuery("Insert into user_data(Name,Age,Email)values (?,?,?)", [Name, Age, Email]);
-        console.log("Hello", UserData)
-        // fastify.log.error("error hello")
+        const {name, age, email} = request.body;
+        let userData = await ExeQuery("Insert into user_data(name, age, email)values (?,?,?)", [name, age, email]);
         return reply
             .code(200)
-            .send(UserData);
+            .send(userData);
 
     } catch (err) {
         reply
@@ -65,21 +59,18 @@ const UserDataAdd = async (request, reply) => {
     }
 };
 
-const UserDataEdit = async (request, reply) => {
+const updateUserDataAction = async (request, reply) => {
     let id = request.params.id
-    console.log("deepika", id)
-    console.log("body", request.body)
     try {
-        // throw new Error("Internal Server Error")
-        const {Name, Age, Email} = request.body;
-        let UserData = await ExeQuery(`update user_data
-                                       set Name=?,
-                                           Age=?,
-                                           Email=?
-                                       where user_id = ?`, [Name, Age, Email, id]);
+        const {name, age, email} = request.body;
+        let userData = await ExeQuery(`update user_data
+                                       set name =?,
+                                           age=?,
+                                           email=?
+                                       where user_id = ?`, [name, age, email, id]);
         reply
             .code(200)
-            .send(UserData);
+            .send(userData);
     } catch (err) {
         reply
             .code(500)
@@ -88,9 +79,9 @@ const UserDataEdit = async (request, reply) => {
 };
 
 module.exports = {
-    AllUserDataGet,
-    UserByIdGet,
-    UserByIdDelete,
-    UserDataAdd,
-    UserDataEdit
+    getAllUserDataAction,
+    getUserByIdAction,
+    deleteUserByIdAction,
+    postUserDataAction,
+    updateUserDataAction
 }
