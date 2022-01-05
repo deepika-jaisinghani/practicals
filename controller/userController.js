@@ -70,7 +70,7 @@ const updateUserDataAction = async (request, reply) => {
                                        where user_id = ?`, [name, age, email, id]);
         reply
             .code(200)
-            .send(userData);
+            .send({message: "USER UPDATED"},userData);
     } catch (err) {
         reply
             .code(500)

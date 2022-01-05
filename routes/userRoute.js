@@ -1,4 +1,4 @@
-const PostValidation = {
+const postValidation = {
     body: {
         type: 'object',
         additionalProperties: false,
@@ -41,7 +41,7 @@ const PostValidation = {
     }
 }
 
-const UpdatePostSchema = {
+const updatePostSchema = {
     params: {
         type: 'object',
         properties: {
@@ -58,7 +58,12 @@ const UpdatePostSchema = {
         },
     },
     response: {
-        200: {type: 'string'}, // a simple message will be sent
+        200: {
+            type: 'object',
+            properties: {
+                message: {type: 'string'}
+            }
+        },
 
         500: {
             type: 'object',
@@ -76,7 +81,7 @@ const UpdatePostSchema = {
         }
     }
 }
-const GetById = {
+const getById = {
     params: {
         type: 'object',
         properties: {
@@ -115,7 +120,7 @@ const GetById = {
 }
 
 
-const GetAllData = {
+const getAllData = {
     response: {
         200: {
             type: 'array',
@@ -149,7 +154,7 @@ const GetAllData = {
     }
 }
 
-const DeleteById = {
+const deleteById = {
     params: {
         type: 'object',
         properties: {
@@ -190,9 +195,9 @@ module.exports = (fastify) => {
         updateUserDataAction
     } = require("../controller/userController");
 
-    fastify.get("/api/users", {schema: GetAllData}, getAllUserDataAction);
-    fastify.get("/api/users/:id", {schema: GetById}, getUserByIdAction);
-    fastify.post("/api/users", {schema: PostValidation}, postUserDataAction);
-    fastify.put("/api/users/:id", {schema: UpdatePostSchema}, updateUserDataAction);
-    fastify.delete("/api/users/:id", {schema: DeleteById}, deleteUserByIdAction);
+    fastify.get("/api/users", {schema: getAllData}, getAllUserDataAction);
+    fastify.get("/api/users/:id", {schema: getById}, getUserByIdAction);
+    fastify.post("/api/users", {schema: postValidation}, postUserDataAction);
+    fastify.put("/api/users/:id", {schema: updatePostSchema}, updateUserDataAction);
+    fastify.delete("/api/users/:id", {schema: deleteById}, deleteUserByIdAction);
 }
