@@ -14,7 +14,11 @@
     "fastify": "^3.25.3",
     "fastify-api": "^0.2.0",
     "fastify-swagger": "^4.13.0",
-    "mysql": "^2.18.1"
+    "fs": "0.0.1-security",
+    "mysql2": "^2.3.3",
+    "path": "^0.12.7",
+    "sequelize": "^6.12.5",
+    "sequelize-cli": "^6.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

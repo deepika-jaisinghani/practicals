@@ -14,15 +14,21 @@ fastify.register(require('fastify-swagger'), {
     },
 })
 
+
 const api = require("./routes/userRoute")
+const route = require("./routes/usersRoute")
+route(fastify)
 api(fastify)
+const db = require("./models")
+db.sequelize.sync().then((request) => {
 
 //start the server
-fastify.listen(5000, function (err, address) {
-    if (err) {
-        console.error(err)
-        process.exit(1)
-        fastify.log.error(err);
-    }
-    console.log(`Server listening on ${address}`)
+    fastify.listen(5000, function (err, address) {
+        if (err) {
+            console.error(err)
+            process.exit(1)
+            fastify.log.error(err);
+        }
+        console.log(`Server listening on ${address}`)
+    });
 });

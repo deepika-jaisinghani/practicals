@@ -17,7 +17,7 @@ const postValidation = {
         200: {
             type: 'object',
             properties: {
-                user_id: {type: 'number'},
+                id: {type: 'number'},
                 name: {type: 'string'},
                 age: {type: 'number'},
                 email: {type: 'string'},
@@ -94,7 +94,7 @@ const getById = {
             items: {
                 type: 'object',
                 properties: {
-                    user_id: {type: 'number'},
+                    id: {type: 'number'},
                     name: {type: 'string'},
                     age: {type: 'number'},
                     email: {type: 'string'},
@@ -127,7 +127,7 @@ const getAllData = {
             items: {
                 type: 'object',
                 properties: {
-                    user_id: {type: 'number'},
+                    id: {type: 'number'},
                     name: {type: 'string'},
                     age: {type: 'number'},
                     email: {type: 'string'},

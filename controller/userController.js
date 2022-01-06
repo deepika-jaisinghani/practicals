@@ -46,7 +46,7 @@ const deleteUserByIdAction = async (request, reply) => {
 const postUserDataAction = async (request, reply) => {
     try {
         const {name, age, email} = request.body;
-        let userData = await ExeQuery("Insert into user_data(name, age, email)values (?,?,?)", [name, age, email]);
+        let userData = await ExeQuery("Insert into user_data (name, age, email)values (?,?,?)", [name, age, email]);
         return reply
             .code(200)
             .send(userData);
@@ -62,7 +62,7 @@ const updateUserDataAction = async (request, reply) => {
     let id = request.params.id
     try {
         const {name, age, email} = request.body;
-        let userData = await ExeQuery(`update user_data
+        let userData = await ExeQuery(`update user_data 
                                        set name =?,
                                            age=?,
                                            email=?
