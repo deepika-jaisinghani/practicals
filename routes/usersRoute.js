@@ -3,18 +3,18 @@ const users = require("../controller/usersController");
 module.exports = (fastify) => {
 
 // Create a new Users
-    fastify.post("/route/create", users.postUserDataAction);
+    fastify.post("/users", users.postUserDataAction);
 
 // Retrieve all Users
-    fastify.get("/list", users.getAllUserDataAction);
+    fastify.get("/users", users.getAllUserDataAction);
 
 // Retrieve a single Users with id
-    fastify.get("/:id", users.getUserByIdAction);
+    fastify.get("/users/:id", users.getUserByIdAction);
 
 // Update a Users with id
-    fastify.put("/edit/:id", users.updateUserDataAction);
+    fastify.put("/users/:id", users.updateUserDataAction);
 
 // Delete a Users with id
-    fastify.delete("/delete/:id", users.deleteUserByIdAction);
+    fastify.delete("/users/:id", users.deleteUserByIdAction);
 
 }
