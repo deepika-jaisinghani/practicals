@@ -1,6 +1,13 @@
 const models = require("../models");
 const Users = models.Users;
+const userAddresses = models.userAddresses;
 const sequelize = require("sequelize");
+const getPagination = (page, size) => {
+    const limit = size ? +size : 3;
+    const offset = page ? page * limit : 0;
+
+    return { limit, offset };
+};
 exports.postUserDataAction = (request, reply) => {
     // Create a User
     const user = {
@@ -21,10 +28,17 @@ exports.postUserDataAction = (request, reply) => {
 }
 
 // Retrieve all Users from the database.
-exports.getAllUserDataAction = (request, reply) => {
+exports.getAllUserDataAction = async (request, reply) => {
     const name = request.query.name;
+    const { page, size, title } = request.query;
+    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    // const { limit, offset } = getPagination(page, size);
     Users.findAll({
-        raw: true
+        // include: userAddresses,
+        raw: true,
+        limit: 10,
+        offset: 1,
+        where: {},
     }).then(data => {
         reply
             .send(data);
@@ -38,9 +52,16 @@ exports.getAllUserDataAction = (request, reply) => {
 };
 
 // Find a single User with an id
-exports.getUserByIdAction = (request, reply) => {
+exports.getUserByIdAction = async (request, reply) => {
     const id = request.params.id;
-    Users.findByPk(id)
+    // const address = await userAddresses.findOne({ where: {id:id},  attributes:['id', 'address','city','pincode']});
+    // console.log("result",address)
+    Users.findByPk(id, {
+        include: {
+            model: userAddresses,
+            required: true
+        }
+    })
         .then(data => {
             if (data) {
                 reply
@@ -62,7 +83,6 @@ exports.getUserByIdAction = (request, reply) => {
 // Update a User by the id in the request
 exports.updateUserDataAction = (request, reply) => {
     const id = request.params.id;
-
     Users.update(request.body, {
         where: {id: id}
     })
@@ -84,7 +104,6 @@ exports.updateUserDataAction = (request, reply) => {
 // Delete all Users from the database.
 exports.deleteUserByIdAction = (request, reply) => {
     const id = request.params.id;
-
     Users.destroy({
         where: {id:id},
         truncate: false

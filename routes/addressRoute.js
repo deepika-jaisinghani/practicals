@@ -1,18 +1,17 @@
-const users = require("../controller/usersController");
-const {stringify} = require("nodemon/lib/utils");
+const userAddresses = require("../controller/users_addressesController");
 const postValidation = {
     body: {
         type: 'object',
         additionalProperties: false,
         properties: {
-            name: {type: 'string', pattern: '[A-Za-z]'},
-            age: {type: 'number'},
-            email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
+            address: {type: 'string'},
+            city: {type: 'string'},
+            pincode: {type: 'number'},
         },
         required: [
-            'name',
-            'age',
-            'email',
+            'address',
+            'city',
+            'pincode',
         ],
     },
     response: {
@@ -20,9 +19,9 @@ const postValidation = {
             type: 'object',
             properties: {
                 id: {type: 'number'},
-                name: {type: 'string'},
-                age: {type: 'number'},
-                email: {type: 'string'},
+                address: {type: 'string'},
+                city: {type: 'string'},
+                pincode: {type: 'number'},
             }
 
         },
@@ -52,11 +51,11 @@ const updatePostSchema = {
     },
     body: {
         type: 'object',
-        required: ['name', 'age', 'email'],
+        required: ['address', 'city', 'pincode'],
         properties: {
-            name: {type: 'string', pattern: '[A-Za-z]'},
-            age: {type: 'number'},
-            email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
+            address: {type: 'string'},
+            city: {type: 'string'},
+            pincode: {type: 'number'},
         },
     },
     response: {
@@ -83,7 +82,6 @@ const updatePostSchema = {
         }
     }
 }
-
 const getById = {
     params: {
         type: 'object',
@@ -93,22 +91,48 @@ const getById = {
     },
     response: {
         200: {
+            type: 'object',
+            properties: {
+                id: {type: 'number'},
+                address: {type: 'string'},
+                city: {type: 'string'},
+                pincode: {type: 'number'},
+            }
+        }
+
+    },
+    500: {
+        type: 'object',
+        properties: {
+            statusCode: {type: 'number'},
+            message: {type: "string"}
+        }
+    },
+    422: {
+        type: 'object',
+        properties: {
+            statusCode: {type: 'number'},
+            message: {type: "string"}
+        }
+    }
+}
+
+
+const getAllData = {
+    response: {
+        200: {
             type: 'array',
             items: {
                 type: 'object',
                 properties: {
                     id: {type: 'number'},
-                    name: {type: 'string'},
-                    age: {type: 'number'},
-                    email: {type: 'string'},
-                },
-                properties : {
-                    id: {type: 'number'},
                     address: {type: 'string'},
                     city: {type: 'string'},
-                    pincode: {type: 'number'}
+                    pincode: {type: 'number'},
+
                 }
             }
+
         },
         500: {
             type: 'object',
@@ -124,6 +148,7 @@ const getById = {
                 message: {type: "string"}
             }
         }
+
     }
 }
 
@@ -159,54 +184,21 @@ const deleteById = {
     }
 }
 
-const getAllData = {
-    response: {
-        200: {
-            type: 'array',
-            items: {
-                type: 'object',
-                properties: {
-                    id: {type: 'number'},
-                    name: {type: 'string'},
-                    age: {type: 'number'},
-                    email: {type: 'string'},
-
-                }
-            }
-
-        },
-        500: {
-            type: 'object',
-            properties: {
-                statusCode: {type: 'number'},
-                message: {type: "string"}
-            }
-        },
-        422: {
-            type: 'object',
-            properties: {
-                statusCode: {type: 'number'},
-                message: {type: "string"}
-            }
-        }
-
-    }
-}
 module.exports = (fastify) => {
 
 // Create a new Users
-    fastify.post("/users", {schema: postValidation}, users.postUserDataAction);
+    fastify.post("/address", {schema: postValidation}, userAddresses.postAddressDataAction);
 
 // Retrieve all Users
-    fastify.get("/users",{schema: getAllData}, users.getAllUserDataAction);
+    fastify.get("/address", {schema: getAllData}, userAddresses.getAddressDataAction);
 
 // Retrieve a single Users with id
-    fastify.get("/users/:id", {schema: getById}, users.getUserByIdAction);
+    fastify.get("/address/:id", {schema: getById}, userAddresses.getAddressByIdAction);
 
 // Update a Users with id
-    fastify.put("/users/:id",{schema: updatePostSchema},users.updateUserDataAction);
+    fastify.put("/address/:id", {schema: updatePostSchema}, userAddresses.updateAddressDataAction);
 
 // Delete a Users with id
-    fastify.delete("/users/:id",{schema: deleteById},users.deleteUserByIdAction);
+    fastify.delete("/address/:id", {schema: deleteById}, userAddresses.deleteAddressByIddAction);
 
 }

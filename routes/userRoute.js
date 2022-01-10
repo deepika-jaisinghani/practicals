@@ -90,31 +90,28 @@ const getById = {
     },
     response: {
         200: {
-            type: 'array',
-            items: {
-                type: 'object',
-                properties: {
-                    id: {type: 'number'},
-                    name: {type: 'string'},
-                    age: {type: 'number'},
-                    email: {type: 'string'},
-                }
+            type: 'object',
+            properties: {
+                id: {type: 'number'},
+                name: {type: 'string'},
+                age: {type: 'number'},
+                email: {type: 'string'},
             }
+        }
 
-        },
-        500: {
-            type: 'object',
-            properties: {
-                statusCode: {type: 'number'},
-                message: {type: "string"}
-            }
-        },
-        422: {
-            type: 'object',
-            properties: {
-                statusCode: {type: 'number'},
-                message: {type: "string"}
-            }
+    },
+    500: {
+        type: 'object',
+        properties: {
+            statusCode: {type: 'number'},
+            message: {type: "string"}
+        }
+    },
+    422: {
+        type: 'object',
+        properties: {
+            statusCode: {type: 'number'},
+            message: {type: "string"}
         }
     }
 }
