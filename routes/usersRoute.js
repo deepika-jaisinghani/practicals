@@ -93,22 +93,30 @@ const getById = {
     },
     response: {
         200: {
-            type: 'array',
-            items: {
-                type: 'object',
-                properties: {
-                    id: {type: 'number'},
-                    name: {type: 'string'},
-                    age: {type: 'number'},
-                    email: {type: 'string'},
-                },
-                properties : {
-                    id: {type: 'number'},
-                    address: {type: 'string'},
-                    city: {type: 'string'},
-                    pincode: {type: 'number'}
+
+            type: 'object',
+            properties: {
+                id: {type: 'number'},
+                name: {type: 'string'},
+                age: {type: 'number'},
+                email: {type: 'string'},
+                createdAt: {type: 'string'},
+                updatedAt: {type: 'string'},
+                userAddresses: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: {type: 'number'},
+                            address: {type: 'string'},
+                            city: {type: 'string'},
+                            pincode: {type: 'number'},
+                            createdAt: {type: 'string'},
+                            updatedAt: {type: 'string'}
+                        }
+                    }
                 }
-            }
+            },
         },
         500: {
             type: 'object',
@@ -170,7 +178,22 @@ const getAllData = {
                     name: {type: 'string'},
                     age: {type: 'number'},
                     email: {type: 'string'},
-
+                    createdAt: {type:'string'},
+                    updatedAt: {type:'string'},
+                    userAddresses: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                id: {type: 'number'},
+                                address: {type: 'string'},
+                                city: {type: 'string'},
+                                pincode: {type: 'number'},
+                                createdAt: {type: 'string'},
+                                updatedAt: {type: 'string'}
+                            }
+                        }
+                    }
                 }
             }
 
@@ -198,15 +221,15 @@ module.exports = (fastify) => {
     fastify.post("/users", {schema: postValidation}, users.postUserDataAction);
 
 // Retrieve all Users
-    fastify.get("/users",{schema: getAllData}, users.getAllUserDataAction);
+    fastify.get("/users", {schema: getAllData}, users.getAllUserDataAction);
 
 // Retrieve a single Users with id
     fastify.get("/users/:id", {schema: getById}, users.getUserByIdAction);
 
 // Update a Users with id
-    fastify.put("/users/:id",{schema: updatePostSchema},users.updateUserDataAction);
+    fastify.put("/users/:id", {schema: updatePostSchema}, users.updateUserDataAction);
 
 // Delete a Users with id
-    fastify.delete("/users/:id",{schema: deleteById},users.deleteUserByIdAction);
+    fastify.delete("/users/:id", {schema: deleteById}, users.deleteUserByIdAction);
 
 }

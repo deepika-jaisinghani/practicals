@@ -6,7 +6,7 @@ const getPagination = (page, size) => {
     const limit = size ? +size : 3;
     const offset = page ? page * limit : 0;
 
-    return { limit, offset };
+    return {limit, offset};
 };
 exports.postUserDataAction = (request, reply) => {
     // Create a User
@@ -30,16 +30,19 @@ exports.postUserDataAction = (request, reply) => {
 // Retrieve all Users from the database.
 exports.getAllUserDataAction = async (request, reply) => {
     const name = request.query.name;
-    const { page, size, title } = request.query;
+    const {page, size, title} = request.query;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
     // const { limit, offset } = getPagination(page, size);
-    Users.findAll({
-        // include: userAddresses,
-        raw: true,
+    const users = await Users.findAll({
+        include: {
+            model: userAddresses
+        },
+        raw: false,
         limit: 10,
         offset: 1,
         where: {},
     }).then(data => {
+        console.log(data)
         reply
             .send(data);
 
@@ -49,6 +52,7 @@ exports.getAllUserDataAction = async (request, reply) => {
                 .code(500)
                 .send({message: err.message || "Some error occurred while retrieving users."});
         });
+    console.log("users", users)
 };
 
 // Find a single User with an id
@@ -59,18 +63,20 @@ exports.getUserByIdAction = async (request, reply) => {
     Users.findByPk(id, {
         include: {
             model: userAddresses,
-            required: true
-        }
+        },
+
     })
         .then(data => {
             if (data) {
+                console.log("helios", data)
                 reply
                     .send(data);
             } else {
                 reply
                     .code(404)
-                    .send({message: `Cannot find Users with id=${id}.`
-                });
+                    .send({
+                        message: `Cannot find Users with id=${id}.`
+                    });
             }
         })
         .catch(err => {
@@ -105,7 +111,7 @@ exports.updateUserDataAction = (request, reply) => {
 exports.deleteUserByIdAction = (request, reply) => {
     const id = request.params.id;
     Users.destroy({
-        where: {id:id},
+        where: {id: id},
         truncate: false
     })
         .then(id => {

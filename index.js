@@ -14,13 +14,9 @@ fastify.register(require('fastify-swagger'), {
     },
 })
 
-// fastify.register(require('fastify-pagination'))
-//     .get("/", {}, async (request, reply) => {
-//         const { limit, offset } = request.parsePagination();
-//         const { items, count } = await getItemsAndTotalCountWithPagination(limit, offset);
-//
-//         reply.sendWithPagination({ count, page: items }); // adds `next` and `previous` properties.
-//     });
+fastify.register(require('fastify-jwt'), {
+    secret: "secret"
+})
 
 const api = require("./routes/userRoute")
 const route = require("./routes/usersRoute")
