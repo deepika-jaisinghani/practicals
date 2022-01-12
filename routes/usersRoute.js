@@ -1,5 +1,5 @@
 const users = require("../controller/usersController");
-const {stringify} = require("nodemon/lib/utils");
+const {authJwt} = require("../middleware");
 const postValidation = {
     body: {
         type: 'object',
@@ -8,11 +8,15 @@ const postValidation = {
             name: {type: 'string', pattern: '[A-Za-z]'},
             age: {type: 'number'},
             email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
+            username: {type: 'string'},
+            password: {type: 'string'}
         },
         required: [
             'name',
             'age',
             'email',
+            'username',
+            'password'
         ],
     },
     response: {
@@ -23,6 +27,8 @@ const postValidation = {
                 name: {type: 'string'},
                 age: {type: 'number'},
                 email: {type: 'string'},
+                username: {type: 'string'},
+                password: {type: 'string'}
             }
 
         },
@@ -57,6 +63,8 @@ const updatePostSchema = {
             name: {type: 'string', pattern: '[A-Za-z]'},
             age: {type: 'number'},
             email: {type: 'string', pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'},
+            username: {type: 'string'},
+            password: {type: 'string'}
         },
     },
     response: {
@@ -178,8 +186,8 @@ const getAllData = {
                     name: {type: 'string'},
                     age: {type: 'number'},
                     email: {type: 'string'},
-                    createdAt: {type:'string'},
-                    updatedAt: {type:'string'},
+                    createdAt: {type: 'string'},
+                    updatedAt: {type: 'string'},
                     userAddresses: {
                         type: 'array',
                         items: {
@@ -215,21 +223,27 @@ const getAllData = {
 
     }
 }
+
 module.exports = (fastify) => {
+    fastify.post("/login", users.login);
+
+    fastify.register((fastify1, options, next) => {
 
 // Create a new Users
-    fastify.post("/users", {schema: postValidation}, users.postUserDataAction);
+        fastify1.post("/", {schema: postValidation}, users.postUserDataAction);
 
 // Retrieve all Users
-    fastify.get("/users", {schema: getAllData}, users.getAllUserDataAction);
+        fastify1.get("/", {schema: getAllData}, users.getAllUserDataAction);
 
 // Retrieve a single Users with id
-    fastify.get("/users/:id", {schema: getById}, users.getUserByIdAction);
+        fastify1.get("/users/:id", {schema: getById}, users.getUserByIdAction);
 
 // Update a Users with id
-    fastify.put("/users/:id", {schema: updatePostSchema}, users.updateUserDataAction);
+        fastify1.put("/users/:id", {schema: updatePostSchema}, users.updateUserDataAction);
 
 // Delete a Users with id
-    fastify.delete("/users/:id", {schema: deleteById}, users.deleteUserByIdAction);
+        fastify1.delete("/users/:id", {schema: deleteById}, users.deleteUserByIdAction);
 
+        next();
+    }, {prefix: 'users'})
 }
